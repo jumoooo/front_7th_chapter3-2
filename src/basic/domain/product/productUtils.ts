@@ -1,4 +1,4 @@
-import { ProductWithUI } from "../types/product";
+import { ProductWithUI } from "./productTypes";
 
 export const filterProductsBySearchTerm = (
   debouncedSearchTerm: string,

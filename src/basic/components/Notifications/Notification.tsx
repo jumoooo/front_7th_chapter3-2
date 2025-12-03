@@ -1,4 +1,4 @@
-import { Notification } from "../../types/notification";
+import { Notification } from "../../domain/notification/notificationTypes";
 import { NotificationItem } from "./NotificationItem";
 
 interface NotificationProps {
