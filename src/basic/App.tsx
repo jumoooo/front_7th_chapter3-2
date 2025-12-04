@@ -1,6 +1,10 @@
 import { useState, useCallback, useEffect, useMemo } from "react";
 import { CartItem, Coupon, Product } from "../types";
-import { ProductWithUI } from "./domain/product/productTypes";
+import {
+  CartSidebarProps,
+  ProductListProps,
+  ProductWithUI,
+} from "./domain/product/productTypes";
 import { filterProductsBySearchTerm } from "./domain/product/productUtils";
 import {
   calculateCartTotal,
@@ -14,6 +18,7 @@ import { HeaderActions } from "./components/layouts/HeaderActions";
 import { ProductList } from "./components/product/ProductList";
 import { CartSidebar } from "./components/cart/CartSidebar";
 import { formatPrice } from "./utils/formatters";
+import { StorePage } from "./pages/StorePage";
 
 // 초기 데이터
 const initialProducts: ProductWithUI[] = [
@@ -423,6 +428,37 @@ const App = () => {
       else setSelectedCoupon(null);
     }
   };
+
+  // StorePage에 필요한 모든 props를 한 번에 조립해 반환하는 헬퍼 함수
+  const buildStorePageProps = () => {
+    const productProps: ProductListProps = {
+      products,
+      filteredProducts,
+      debouncedSearchTerm,
+      getRemainingStock,
+      getDisplayPrice,
+      addToCart,
+    };
+    const cartSidebarProps: CartSidebarProps = {
+      cartProps: {
+        filledItems,
+        removeFromCart,
+        updateQuantity,
+      },
+      couponProps: {
+        coupons,
+        selectedCouponCode: selectedCoupon?.code || "",
+        selectorOnChange,
+      },
+      payment: {
+        totals,
+        completeOrder,
+      },
+    };
+
+    return { productProps, cartSidebarProps };
+  };
+  const storePageProps = buildStorePageProps();
 
   return (
     <DefaultLayout
@@ -1030,32 +1066,7 @@ const App = () => {
           )}
         </div>
       ) : (
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
-          <div className="lg:col-span-3">
-            {/* 상품 목록 */}
-            <ProductList
-              products={products}
-              filteredProducts={filteredProducts}
-              debouncedSearchTerm={debouncedSearchTerm}
-              getRemainingStock={getRemainingStock}
-              getDisplayPrice={getDisplayPrice}
-              addToCart={addToCart}
-            />
-          </div>
-
-          <div className="lg:col-span-1">
-            <CartSidebar
-              filledItems={filledItems}
-              removeFromCart={removeFromCart}
-              updateQuantity={updateQuantity}
-              coupons={coupons}
-              selectedCouponCode={selectedCoupon?.code || ""}
-              selectorOnChange={selectorOnChange}
-              totals={totals}
-              completeOrder={completeOrder}
-            />
-          </div>
-        </div>
+        <StorePage {...storePageProps} />
       )}
     </DefaultLayout>
   );
