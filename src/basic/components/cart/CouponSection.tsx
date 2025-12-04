@@ -30,7 +30,7 @@ export const CouponSection = ({
         <Selector
           defaultValue="쿠폰 선택"
           value={selectedCouponCode}
-          data={coupons}
+          options={coupons}
           onChange={selectorOnChange}
           valueKey="code"
           labelKey="name"

@@ -1,10 +1,10 @@
 import { CartItem } from "../../../../types";
+import { PriceType } from "../../../constans/constans";
 import { ProductWithUI } from "../../../domain/product/productTypes";
 import { ProductTableRow } from "./ProductTableRow";
 
-interface ProductListTable {
+export interface ProductListTableProps {
   cart: CartItem[];
-  activeTab: string;
   products: ProductWithUI[];
   startEditProduct: (product: ProductWithUI) => void;
   deleteProduct: (productId: string) => void;
@@ -15,7 +15,8 @@ export const ProductListTable = ({
   products,
   startEditProduct,
   deleteProduct,
-}: ProductListTable) => {
+}: ProductListTableProps) => {
+  const priceType = PriceType.KR;
   return (
     <table className="w-full">
       <thead className="bg-gray-50 border-b border-gray-200">
@@ -43,6 +44,7 @@ export const ProductListTable = ({
             key={product.id}
             cart={cart}
             product={product}
+            priceType={priceType}
             onClickEdit={() => startEditProduct(product)}
             onClickDelete={() => deleteProduct(product.id)}
           />

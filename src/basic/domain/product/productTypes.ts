@@ -1,4 +1,4 @@
-import { CartItem, Coupon, Product } from "../../../types";
+import { CartItem, Coupon, Discount, Product } from "../../../types";
 import { FilledCartItem } from "../cart/cartTypes";
 
 export interface ProductWithUI extends Product {
@@ -36,15 +36,10 @@ export interface CartSidebarProps {
   };
 }
 
-export interface DisCount {
-  quantity: number;
-  rate: number;
-}
-
 export interface ProductForm {
   name: string;
   price: number;
   stock: number;
   description: string;
-  discounts: DisCount[];
+  discounts: Discount[];
 }

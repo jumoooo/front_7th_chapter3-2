@@ -1,8 +1,8 @@
 interface SelectorProps<T> {
   className?: string;
   defaultValue?: string;
-  value?: string;
-  data: T[];
+  value?: string | number;
+  options: T[];
   onChange?: (e: React.ChangeEvent<HTMLSelectElement>) => void;
   valueKey: keyof T; // option value로 쓸 필드
   labelKey: keyof T; // option label로 쓸 필드
@@ -12,7 +12,7 @@ export const Selector = <T extends object>({
   className,
   defaultValue,
   value,
-  data,
+  options: data,
   valueKey,
   labelKey,
   onChange,

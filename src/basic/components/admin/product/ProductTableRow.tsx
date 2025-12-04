@@ -6,6 +6,7 @@ import { ProductWithUI } from "../../../domain/product/productTypes";
 interface ProductTableRowProps {
   cart: CartItem[];
   product: ProductWithUI;
+  priceType: PriceType;
   onClickEdit: () => void;
   onClickDelete: () => void;
 }
@@ -13,6 +14,7 @@ interface ProductTableRowProps {
 export const ProductTableRow = ({
   cart,
   product,
+  priceType,
   onClickEdit,
   onClickDelete,
 }: ProductTableRowProps) => {
@@ -23,7 +25,7 @@ export const ProductTableRow = ({
         {name}
       </td>
       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-        {getDisplayPrice(cart, product, PriceType.EN)}
+        {getDisplayPrice(cart, product, priceType)}
       </td>
       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
         <span
