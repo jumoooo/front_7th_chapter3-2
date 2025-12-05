@@ -23,5 +23,10 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src"]
+  "include": ["src"],
+  "exclude": [
+    "src/basic",
+    "src/origin",
+    "src/refactoring(hint)"
+  ]
 }

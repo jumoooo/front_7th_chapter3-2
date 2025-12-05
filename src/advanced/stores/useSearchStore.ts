@@ -20,7 +20,7 @@ interface SearchState {
 // 디바운스 타이머를 저장할 변수
 let debounceTimer: ReturnType<typeof setTimeout> | null = null;
 
-export const useSearchStore = create<SearchState>((set, get) => ({
+export const useSearchStore = create<SearchState>((set) => ({
   // 초기 상태
   searchTerm: "",
   debouncedSearchTerm: "",
