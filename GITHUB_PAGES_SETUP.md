@@ -99,6 +99,48 @@ https://사용자명.github.io/front_7th_chapter3-2/
 
 ## 🔍 문제 해결
 
+### ❌ README.md가 나올 때 (현재 문제)
+
+**증상**: `https://jumoooo.github.io/front_7th_chapter3-2/`에 접속하면 README.md 내용이 표시됨
+
+**원인**: GitHub Pages 설정이 잘못되어 있거나, 빌드된 파일이 배포되지 않았습니다.
+
+**해결 방법**:
+
+1. **GitHub Settings → Pages 확인** (가장 중요!)
+
+   - 저장소로 이동: `https://github.com/jumoooo/front_7th_chapter3-2`
+   - Settings → Pages 메뉴로 이동
+   - **Source가 "GitHub Actions"로 설정되어 있는지 확인**
+   - 만약 "Deploy from a branch"로 되어 있다면:
+     - Source를 **"GitHub Actions"**로 변경
+     - Save 클릭
+
+2. **GitHub Actions 워크플로우 실행 확인**
+
+   - Actions 탭으로 이동: `https://github.com/jumoooo/front_7th_chapter3-2/actions`
+   - "Deploy to GitHub Pages" 워크플로우가 실행되었는지 확인
+   - 실행되지 않았다면, 빈 커밋을 만들어 push:
+     ```bash
+     git commit --allow-empty -m "trigger deployment"
+     git push
+     ```
+   - 워크플로우가 실패했다면 로그를 확인하고 오류 해결
+
+3. **gh-pages 브랜치 확인**
+
+   - 브랜치 목록: `https://github.com/jumoooo/front_7th_chapter3-2/branches`
+   - `gh-pages` 브랜치가 있는지 확인
+   - 있다면 브랜치 내용 확인: `https://github.com/jumoooo/front_7th_chapter3-2/tree/gh-pages`
+   - `index.html` 파일이 있어야 합니다
+
+4. **빌드 로컬 테스트**
+   ```bash
+   pnpm build:advanced
+   ls -la dist/
+   ```
+   - `dist/index.html` 파일이 생성되는지 확인
+
 ### 배포가 안 될 때
 
 1. **GitHub Actions 실행 확인**
@@ -119,6 +161,7 @@ https://사용자명.github.io/front_7th_chapter3-2/
 
 - vite.config.ts의 base path가 저장소 이름과 일치하는지 확인
 - GitHub Pages 설정에서 올바른 브랜치/폴더가 선택되었는지 확인
+- 브라우저 캐시를 지우고 다시 접속 (Ctrl + Shift + R 또는 Cmd + Shift + R)
 
 ## 📝 참고 사항
 
