@@ -35,9 +35,29 @@ jobs:
         env:
           NODE_ENV: production
 
+      # 빌드 결과 확인 (디버깅용)
+      - name: Verify build output
+        run: |
+          echo "=== Build output verification ==="
+          ls -la dist/
+          echo "---"
+          ls -la dist/assets/ || echo "ERROR: assets directory not found!"
+          echo "---"
+          if [ -f dist/.nojekyll ]; then
+            echo "✅ .nojekyll file exists"
+          else
+            echo "❌ .nojekyll file NOT found!"
+          fi
+          if [ -f dist/index.html ]; then
+            echo "✅ index.html exists"
+            echo "--- index.html content (first 10 lines) ---"
+            head -10 dist/index.html
+          else
+            echo "❌ index.html NOT found!"
+          fi
+
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./dist
-
