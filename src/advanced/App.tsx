@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   CartSidebarProps,
   ProductListProps,
@@ -16,58 +16,70 @@ import { AdminProductsSectionProps } from "./components/admin/product/AdminProdu
 import { CouponListProps } from "./components/admin/coupon/CouponList";
 import { CouponFormSection } from "./components/admin/coupon/CouponFormSection";
 import { AdminPage } from "./pages/AdminPage";
-import { useNotification } from "./hooks/useNotification";
-import { useSearch } from "./hooks/useSearch";
-import { useProduct } from "./hooks/useProduct";
-import { useCart } from "./hooks/useCart";
-import { useCoupon } from "./hooks/useCoupon";
+import { useNotificationStore } from "./stores/useNotificationStore";
+import { useSearchStore } from "./stores/useSearchStore";
+import { useProductStore } from "./stores/useProductStore";
+import { useCartStore } from "./stores/useCartStore";
+import { useCouponStore } from "./stores/useCouponStore";
 
 const App = () => {
   // UI 상태 (Entity가 아닌 상태)
   const [isAdmin, setIsAdmin] = useState(false);
   const [activeTab, setActiveTab] = useState<AdminTabKey>("products");
 
-  // Hook 사용 - Entity를 다루지 않는 Hook
-  const { notifications, setNotifications, addNotification } =
-    useNotification();
-  const { searchTerm, setSearchTerm, debouncedSearchTerm } = useSearch();
+  // Store 사용 - Entity를 다루지 않는 Store
+  const notifications = useNotificationStore((state) => state.notifications);
+  const setNotifications = useNotificationStore(
+    (state) => state.setNotifications
+  );
+  const searchTerm = useSearchStore((state) => state.searchTerm);
+  const setSearchTerm = useSearchStore((state) => state.setSearchTerm);
+  const debouncedSearchTerm = useSearchStore(
+    (state) => state.debouncedSearchTerm
+  );
 
-  // Hook 사용 - Entity를 다루는 Hook (의존성 순서대로)
-  const {
-    products,
-    productForm,
-    editingProduct,
-    showProductForm,
-    setProductForm,
-    setEditingProduct,
-    setShowProductForm,
-    deleteProduct,
-    startEditProduct,
-    handleProductSubmit,
-  } = useProduct(addNotification);
+  // Store 사용 - Entity를 다루는 Store
+  const products = useProductStore((state) => state.products);
+  const productForm = useProductStore((state) => state.productForm);
+  const editingProduct = useProductStore((state) => state.editingProduct);
+  const showProductForm = useProductStore((state) => state.showProductForm);
+  const setProductForm = useProductStore((state) => state.setProductForm);
+  const setEditingProduct = useProductStore((state) => state.setEditingProduct);
+  const setShowProductForm = useProductStore(
+    (state) => state.setShowProductForm
+  );
+  const deleteProduct = useProductStore((state) => state.deleteProduct);
+  const startEditProduct = useProductStore((state) => state.startEditProduct);
+  const handleProductSubmit = useProductStore(
+    (state) => state.handleProductSubmit
+  );
 
-  const {
-    cart,
-    totalItemCount,
-    filledItems,
-    addToCart,
-    removeFromCart,
-    updateQuantity,
-    completeOrder: completeOrderFromCart,
-  } = useCart(products, addNotification);
+  // cart가 배열인지 확인 (안전장치)
+  const cartRaw = useCartStore((state) => state.cart);
+  const cart = Array.isArray(cartRaw) ? cartRaw : [];
+  const addToCart = useCartStore((state) => state.addToCart);
+  const removeFromCart = useCartStore((state) => state.removeFromCart);
+  const updateQuantity = useCartStore((state) => state.updateQuantity);
+  const completeOrderFromCart = useCartStore((state) => state.completeOrder);
+  const getTotalItemCount = useCartStore((state) => state.getTotalItemCount);
+  const getFilledItems = useCartStore((state) => state.getFilledItems);
 
-  const {
-    coupons,
-    selectedCoupon,
-    couponForm,
-    showCouponForm,
-    setSelectedCoupon,
-    setCouponForm,
-    setShowCouponForm,
-    deleteCoupon,
-    handleCouponSubmit,
-    selectorOnChange,
-  } = useCoupon(cart, addNotification);
+  // coupons가 배열인지 확인 (안전장치)
+  const couponsRaw = useCouponStore((state) => state.coupons);
+  const coupons = Array.isArray(couponsRaw) ? couponsRaw : [];
+  const selectedCoupon = useCouponStore((state) => state.selectedCoupon);
+  const couponForm = useCouponStore((state) => state.couponForm);
+  const showCouponForm = useCouponStore((state) => state.showCouponForm);
+  const setSelectedCoupon = useCouponStore((state) => state.setSelectedCoupon);
+  const setCouponForm = useCouponStore((state) => state.setCouponForm);
+  const setShowCouponForm = useCouponStore(
+    (state) => state.setShowCouponForm
+  );
+  const deleteCoupon = useCouponStore((state) => state.deleteCoupon);
+  const handleCouponSubmit = useCouponStore(
+    (state) => state.handleCouponSubmit
+  );
+  const selectorOnChange = useCouponStore((state) => state.selectorOnChange);
 
   // completeOrder는 cart와 coupon 모두 초기화해야 하므로 래퍼 함수 생성
   const completeOrder = () => {
@@ -77,10 +89,33 @@ const App = () => {
 
   // 계산된 값 (순수 함수 호출)
   const totals = calculateCartTotal(cart, selectedCoupon);
+  
+  // localStorage 동기화 (origin과 동일한 형식으로 저장)
+  // persist 미들웨어는 내부적으로 사용하되, 테스트 호환성을 위해 배열을 직접 저장
+  useEffect(() => {
+    if (cart.length > 0) {
+      localStorage.setItem("cart", JSON.stringify(cart));
+    } else {
+      localStorage.removeItem("cart");
+    }
+  }, [cart]);
+
+  useEffect(() => {
+    localStorage.setItem("products", JSON.stringify(products));
+  }, [products]);
+
+  useEffect(() => {
+    localStorage.setItem("coupons", JSON.stringify(coupons));
+  }, [coupons]);
+  
   const filteredProducts = filterProductsBySearchTerm(
     debouncedSearchTerm,
     products
   );
+
+  // 계산된 값 (Store에서 제공하는 함수 사용)
+  const totalItemCount = getTotalItemCount();
+  const filledItems = getFilledItems();
 
   // StorePage에 필요한 모든 props를 한 번에 조립해 반환하는 헬퍼 함수
   const buildStorePageProps = () => {
@@ -121,6 +156,7 @@ const App = () => {
   };
 
   const buildAdminProductsSection = () => {
+    const addNotification = useNotificationStore.getState().addNotification;
     const adminProductsProps: AdminProductsSectionProps = {
       productListTableProps: productListTableProps(),
       productForm,
@@ -136,6 +172,7 @@ const App = () => {
   };
 
   const buildAdminCouponSection = () => {
+    const addNotification = useNotificationStore.getState().addNotification;
     const couponsListProps: CouponListProps = {
       coupons,
       deleteCoupon,

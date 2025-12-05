@@ -142,7 +142,6 @@ export const getRemainingStock = (
 ): number => {
   const cartItem = cart.find((item) => item.product.id === product.id);
   const remaining = product.stock - (cartItem?.quantity || 0);
-
   return remaining;
 };
 /** =============================
