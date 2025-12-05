@@ -6,6 +6,7 @@
 
    - GitHub Pages를 위한 base path 설정: `/front_7th_chapter3-2/`
    - 빌드 시 `index.advanced.html`을 사용하도록 설정
+   - **vite 플러그인으로 빌드 후 자동으로 `index.html` 생성** (GitHub Pages용)
 
 2. **package.json 스크립트 추가**
 
@@ -140,6 +141,7 @@ https://사용자명.github.io/front_7th_chapter3-2/
    ls -la dist/
    ```
    - `dist/index.html` 파일이 생성되는지 확인
+   - ✅ vite 플러그인이 자동으로 `index.advanced.html`을 `index.html`로 복사합니다
 
 ### 배포가 안 될 때
 
