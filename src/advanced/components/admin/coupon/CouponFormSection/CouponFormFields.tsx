@@ -5,7 +5,7 @@ import { FormSelectField } from "../../../common/FormSelectField";
 
 interface CouponFormFieldsProps {
   couponForm: Coupon;
-  setCouponForm: (value: React.SetStateAction<Coupon>) => void;
+  setCouponForm: (form: Coupon | ((prev: Coupon) => Coupon)) => void;
   addNotification: (
     message: string,
     type?: "error" | "success" | "warning"

@@ -3,7 +3,7 @@ import { ProductDiscountRow } from "./ProductDiscountRow";
 
 interface ProductDiscountListProps {
   productForm: ProductForm;
-  setProductForm: (value: React.SetStateAction<ProductForm>) => void;
+  setProductForm: (form: ProductForm | ((prev: ProductForm) => ProductForm)) => void;
 }
 
 export const ProductDiscountList = ({

@@ -18,7 +18,7 @@ interface SearchState {
 }
 
 // 디바운스 타이머를 저장할 변수
-let debounceTimer: NodeJS.Timeout | null = null;
+let debounceTimer: ReturnType<typeof setTimeout> | null = null;
 
 export const useSearchStore = create<SearchState>((set, get) => ({
   // 초기 상태

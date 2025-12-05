@@ -5,12 +5,12 @@ import { CouponFormFields } from "./CouponFormFields";
 export interface CouponFormSection {
   couponForm: Coupon;
   handleCouponSubmit: (e: React.FormEvent) => void;
-  setCouponForm: (value: React.SetStateAction<Coupon>) => void;
+  setCouponForm: (form: Coupon | ((prev: Coupon) => Coupon)) => void;
   addNotification: (
     message: string,
     type?: "error" | "success" | "warning"
   ) => void;
-  setShowCouponForm: (value: React.SetStateAction<boolean>) => void;
+  setShowCouponForm: (show: boolean) => void;
 }
 
 export const CouponFormSection = ({

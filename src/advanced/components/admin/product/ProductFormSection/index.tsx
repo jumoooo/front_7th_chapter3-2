@@ -4,7 +4,7 @@ import { ProductDiscountList } from "./ProductDiscountList";
 
 interface ProductFormProps {
   productForm: ProductForm;
-  setProductForm: React.Dispatch<React.SetStateAction<ProductForm>>;
+  setProductForm: (form: ProductForm | ((prev: ProductForm) => ProductForm)) => void;
   titleText: string;
   submitButtonText: string;
   onSubmit: (e: React.FormEvent) => void;

@@ -8,9 +8,11 @@ export interface AdminProductsSectionProps {
   productForm: ProductForm;
   showProductForm: boolean;
   editingProduct: string | null;
-  setEditingProduct: (value: React.SetStateAction<string | null>) => void;
-  setProductForm: (value: React.SetStateAction<ProductForm>) => void;
-  setShowProductForm: (value: React.SetStateAction<boolean>) => void;
+  setEditingProduct: (id: string | null) => void;
+  setProductForm: (
+    form: ProductForm | ((prev: ProductForm) => ProductForm)
+  ) => void;
+  setShowProductForm: (show: boolean) => void;
   handleProductSubmit: (e: React.FormEvent) => void;
   addNotification: (
     message: string,
@@ -74,4 +76,3 @@ export const AdminProductsSection = ({
     </section>
   );
 };
-

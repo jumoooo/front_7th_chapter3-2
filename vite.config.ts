@@ -13,35 +13,36 @@ const __dirname = path.dirname(__filename);
 const base: string =
   process.env.NODE_ENV === 'production' ? '/front_7th_chapter3-2/' : '';
 
-export default mergeConfig(
-  defineConfig(({ command }) => {
-    const isBuild = command === 'build';
+const viteConfig = defineConfig(({ command }) => {
+  const isBuild = command === 'build';
 
-    return {
-      base, // GitHub Pages 배포 경로 설정
-      plugins: [react()],
-      resolve: {
-        alias: {
-          '@': path.resolve(__dirname, './src'),
-        },
+  return {
+    base, // GitHub Pages 배포 경로 설정
+    plugins: [react()],
+    resolve: {
+      alias: {
+        '@': path.resolve(__dirname, './src'),
       },
-      // 빌드 시 index.advanced.html을 index.html로 사용
-      ...(isBuild
-        ? {
-            build: {
-              rollupOptions: {
-                input: path.resolve(__dirname, 'index.advanced.html'),
-              },
-            },
-          }
-        : {}),
-    };
-  }),
-  defineTestConfig({
-    test: {
-      globals: true,
-      environment: 'jsdom',
-      setupFiles: './src/setupTests.ts',
     },
-  })
-);
+    // 빌드 시 index.advanced.html을 index.html로 사용
+    ...(isBuild
+      ? {
+          build: {
+            rollupOptions: {
+              input: path.resolve(__dirname, 'index.advanced.html'),
+            },
+          },
+        }
+      : {}),
+  };
+});
+
+const testConfig = defineTestConfig({
+  test: {
+    globals: true,
+    environment: 'jsdom',
+    setupFiles: './src/setupTests.ts',
+  },
+});
+
+export default mergeConfig(viteConfig, testConfig);

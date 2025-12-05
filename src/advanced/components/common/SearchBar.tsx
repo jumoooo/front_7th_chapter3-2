@@ -1,6 +1,6 @@
 interface SearchBarProps {
   searchTerm: string;
-  setSearchTerm: React.Dispatch<React.SetStateAction<string>>;
+  setSearchTerm: (term: string) => void;
   placeholder?: string;
   className?: string; // 부모로부터 클래스 받기
 }

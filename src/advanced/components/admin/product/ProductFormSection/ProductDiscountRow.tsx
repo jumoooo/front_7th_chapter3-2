@@ -5,7 +5,7 @@ interface ProductDiscountRowProps {
   discount: Discount;
   index: number;
   productForm: ProductForm;
-  setProductForm: (value: React.SetStateAction<ProductForm>) => void;
+  setProductForm: (form: ProductForm | ((prev: ProductForm) => ProductForm)) => void;
 }
 
 export const ProductDiscountRow = ({

@@ -3,7 +3,7 @@ import { NotificationItem } from "./NotificationItem";
 
 interface NotificationProps {
   notifications: Notification[];
-  setNotifications: React.Dispatch<React.SetStateAction<Notification[]>>;
+  setNotifications: (notifications: Notification[]) => void;
 }
 
 export const Notifications = ({
@@ -17,6 +17,7 @@ export const Notifications = ({
           key={notif.id}
           notif={notif}
           setNotifications={setNotifications}
+          notifications={notifications}
         />
       ))}
     </div>

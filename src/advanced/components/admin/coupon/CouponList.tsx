@@ -6,7 +6,7 @@ import { CouponItem } from "./CouponItem";
 export interface CouponListProps {
   coupons: Coupon[];
   deleteCoupon: (couponCode: string) => void;
-  setShowCouponForm: (value: React.SetStateAction<boolean>) => void;
+  setShowCouponForm: (show: boolean) => void;
   showCouponForm: boolean;
 }
 

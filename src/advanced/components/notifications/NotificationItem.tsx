@@ -2,12 +2,14 @@ import { Notification } from "../../domain/notification/notificationTypes";
 
 interface NotificationItemProps {
   notif: Notification;
-  setNotifications: React.Dispatch<React.SetStateAction<Notification[]>>;
+  setNotifications: (notifications: Notification[]) => void;
+  notifications: Notification[];
 }
 
 export const NotificationItem = ({
   notif,
   setNotifications,
+  notifications,
 }: NotificationItemProps) => {
   const { id, type, message } = notif;
   return (
@@ -23,7 +25,7 @@ export const NotificationItem = ({
       <span className="mr-2">{message}</span>
       <button
         onClick={() =>
-          setNotifications((prev) => prev.filter((n) => n.id !== id))
+          setNotifications(notifications.filter((n) => n.id !== id))
         }
         className="text-white hover:text-gray-200">
         <svg

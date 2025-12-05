@@ -3,7 +3,7 @@ import { FormInputField } from "../../../common/FormInputField";
 
 interface ProductBasicFieldsProps {
   productForm: ProductForm;
-  setProductForm: (value: React.SetStateAction<ProductForm>) => void;
+  setProductForm: (form: ProductForm | ((prev: ProductForm) => ProductForm)) => void;
   addNotification: (
     message: string,
     type?: "error" | "success" | "warning"
